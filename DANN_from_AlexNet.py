@@ -17,8 +17,7 @@ class AlexNet(nn.Module):
         super(AlexNet, self).__init__()
         
         state_dict = load_state_dict_from_url(model_urls['alexnet'],
-                                              progress = True,
-                                              strict = False)
+                                              progress = True)
         self.features = nn.Sequential(
             nn.Conv2d(3, 64, kernel_size=11, stride=4, padding=2),
             nn.ReLU(inplace=True),
@@ -34,7 +33,8 @@ class AlexNet(nn.Module):
             nn.ReLU(inplace=True),
             nn.MaxPool2d(kernel_size=3, stride=2),
         )
-        self.features.load_state_dict(state_dict)
+        self.features.load_state_dict(state_dict,
+                                      strict = False)
         
         self.avgpool = nn.AdaptiveAvgPool2d((6, 6))
         
