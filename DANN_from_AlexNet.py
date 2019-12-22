@@ -57,7 +57,7 @@ class AlexNet(nn.Module):
             nn.ReLU(inplace=True),
             nn.Linear(4096, 2),
         )
-        self.domain_classifier.weight.data = self.class_classifier.weight.data
+        self.domain_classifier.weights.data = self.class_classifier.weights.data
         self.domain_classifier.bias.data = self.class_classifier.bias.data
 
 
