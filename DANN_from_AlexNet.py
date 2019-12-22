@@ -48,7 +48,7 @@ class AlexNet(nn.Module):
         self.class_classifier.load_state_dict(state_dict)
         
         
-        self.class_classifier = nn.Sequential(
+        self.domain_classifier = nn.Sequential(
             nn.Dropout(),
             nn.Linear(256 * 6 * 6, 4096),
             nn.ReLU(inplace=True),
@@ -57,7 +57,7 @@ class AlexNet(nn.Module):
             nn.ReLU(inplace=True),
             nn.Linear(4096, 2),
         )
-        self.class_classifier.load_state_dict(state_dict)
+        self.domain_classifier.load_state_dict(state_dict)
 
 
     def forward(self, input_data, alpha):
