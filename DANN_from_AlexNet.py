@@ -71,7 +71,7 @@ class AlexNet(nn.Module):
         self.domain_classifier.apply(init_weights)
         
     def forward(self, input_data, alpha):
-        feature = self.feature(input_data)
+        feature = self.features(input_data)
         feature = feature.view(-1, 256 * 6 * 6)
         reverse_feature = ReverseLayerF.apply(feature, alpha)
         class_output = self.class_classifier(feature)
