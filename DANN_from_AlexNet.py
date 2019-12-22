@@ -53,8 +53,8 @@ class AlexNet(nn.Module):
         
         def init_weights(m):
             if type(m) == nn.Linear:
-                m.weight.data.fill_(self.class_classifier[1].weight.data())
-                m.bias.data.fill_(self.class_classifier[1].bias.data())
+                m.weight.data = self.class_classifier[1].weight.data
+                m.bias.data.fill_(self.class_classifier[1].bias.data)
 
         #nn.init.normal(self.class_classifier[1].weight)
         #nn.init.normal(self.class_classifier[1].bias)
