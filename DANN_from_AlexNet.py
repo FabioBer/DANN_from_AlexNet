@@ -51,8 +51,8 @@ class AlexNet(nn.Module):
         )
         
         self.domain_classifier = nn.Sequential(
-            nn.init.normal(self.class_classifier[1].weight) 
-            nn.init.normal(self.class_classifier[1].bias)
+            nn.init.normal(self.class_classifier[1].weight),
+            nn.init.normal(self.class_classifier[1].bias),
             nn.Dropout(),
             nn.Linear(256 * 6 * 6, 4096),
             nn.ReLU(inplace=True),
