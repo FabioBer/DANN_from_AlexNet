@@ -35,7 +35,7 @@ class AlexNet(nn.Module):
             nn.ReLU(inplace=True),
             nn.Conv2d(256, 256, kernel_size=3, padding=1),
             nn.ReLU(inplace=True),
-            nn.MaxPool2d(kernel_size=3, stride=2),
+            nn.MaxPool2d(kernel_size=3, stride=2)
         )
         
         self.avgpool = nn.AdaptiveAvgPool2d((6, 6))
@@ -47,7 +47,7 @@ class AlexNet(nn.Module):
             nn.Dropout(),
             nn.Linear(4096, 4096),
             nn.ReLU(inplace=True),
-            nn.Linear(4096, num_classes),
+            nn.Linear(4096, num_classes)
         )
         
         self.domain_classifier = nn.Sequential(
@@ -59,7 +59,7 @@ class AlexNet(nn.Module):
             nn.Dropout(),
             nn.Linear(4096, 4096),
             nn.ReLU(inplace=True),
-            nn.Linear(4096, 2),
+            nn.Linear(4096, 2)
         )
             
     def forward(self, input_data, alpha):
