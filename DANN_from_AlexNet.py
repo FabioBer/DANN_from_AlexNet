@@ -1,5 +1,5 @@
 import torch.nn as nn
-from torch.utils import load_state_dict_from_url
+from torchvision.model.utils import load_state_dict_from_url
 from functions import ReverseLayerF
 
 
