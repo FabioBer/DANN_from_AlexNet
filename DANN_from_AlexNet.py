@@ -19,7 +19,7 @@ class AlexNet(nn.Module):
         state_dict = load_state_dict_from_url(model_urls['alexnet'],
                                               progress = True)
         
-        model.load_state_dict(state_dict,
+        AlexNet.load_state_dict(state_dict,
                               strict = False)
         
         self.features = nn.Sequential(
