@@ -50,11 +50,13 @@ class AlexNet(nn.Module):
             nn.Linear(4096, num_classes)
         )
         
+        
+        nn.init.normal(self.class_classifier[1].weight)
+        nn.init.normal(self.class_classifier[1].bias)
+        
         self.domain_classifier = nn.Sequential(
             nn.Dropout(),
             nn.Linear(256 * 6 * 6, 4096),
-            nn.init.normal(self.class_classifier[1].weight),
-            nn.init.normal(self.class_classifier[1].bias),
             nn.ReLU(inplace=True),
             nn.Dropout(),
             nn.Linear(4096, 2)
