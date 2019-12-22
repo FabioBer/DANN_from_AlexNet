@@ -64,9 +64,6 @@ class AlexNet(nn.Module):
             nn.Linear(256 * 6 * 6, 4096),
             nn.ReLU(inplace=True),
             nn.Dropout(),
-            nn.Linear(4096, 4096),
-            nn.ReLU(inplace=True),
-            nn.Dropout(),
             nn.Linear(4096, 2)
             #nn.LogSoftmax(dim=1)
         )
@@ -74,9 +71,9 @@ class AlexNet(nn.Module):
         self.domain_classifier.apply(init_weights)
         
     def forward(self, input_data, alpha):
-        input_data = input_data.expand(input_data.data.shape[0], 3, 224, 224)
-        feature = self.features(input_data)
-        feature = feature.view(-1, 256 * 6 * 6)
+        input_data = input_data.expand(input_data.data.shape[0], 3, 28, 28)
+        feature = self.feature(input_data)
+        feature = feature.view(-1, 50 * 4 * 4)
         reverse_feature = ReverseLayerF.apply(feature, alpha)
         class_output = self.class_classifier(feature)
         domain_output = self.domain_classifier(reverse_feature)
