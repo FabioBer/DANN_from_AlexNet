@@ -51,14 +51,14 @@ class AlexNet(nn.Module):
         )
         
         self.domain_classifier = nn.Sequential(
-            nn.init.normal(self.class_classifier[1].weight),
-            nn.init.normal(self.class_classifier[1].bias),
             nn.Dropout(),
             nn.Linear(256 * 6 * 6, 4096),
+            nn.init.normal(self.class_classifier[1].weight),
+            nn.init.normal(self.class_classifier[1].bias),
             nn.ReLU(inplace=True),
             nn.Dropout(),
-            nn.Linear(4096, 2),
-            nn.LogSoftmax(dim=1)
+            nn.Linear(4096, 2)
+            #nn.LogSoftmax(dim=1)
         )
             
     def forward(self, input_data, alpha):
