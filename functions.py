@@ -7,7 +7,7 @@ class ReverseLayerF(Function):
     def forward(ctx, x, alpha):
         ctx.alpha = alpha
 
-        return x.view_as(x.size(1),x.size(0))
+        return x.view(x.size(1),x.size(0))
 
     @staticmethod
     def backward(ctx, grad_output):
