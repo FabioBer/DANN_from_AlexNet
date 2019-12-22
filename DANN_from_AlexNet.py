@@ -15,6 +15,10 @@ class AlexNet(nn.Module):
 
     def __init__(self, num_classes=7):
         super(AlexNet, self).__init__()
+        
+        state_dict = load_state_dict_from_url(model_urls['alexnet'],
+                                              progress = progress,
+                                              strict = False)
         self.features = nn.Sequential(
             nn.Conv2d(3, 64, kernel_size=11, stride=4, padding=2),
             nn.ReLU(inplace=True),
@@ -30,11 +34,9 @@ class AlexNet(nn.Module):
             nn.ReLU(inplace=True),
             nn.MaxPool2d(kernel_size=3, stride=2),
         )
-        self.avgpool = nn.AdaptiveAvgPool2d((6, 6))
+        self.features.load_state_dict(state_dict)
         
-        state_dict = load_state_dict_from_url(model_urls['alexnet'],
-                                              progress=progress,
-                                              strict = False)
+        self.avgpool = nn.AdaptiveAvgPool2d((6, 6))
         
         self.class_classifier = nn.Sequential(
             nn.Dropout(),
@@ -45,8 +47,6 @@ class AlexNet(nn.Module):
             nn.ReLU(inplace=True),
             nn.Linear(4096, num_classes),
         )
-        self.class_classifier.load_state_dict(state_dict)
-        
         
         self.domain_classifier = nn.Sequential(
             nn.Dropout(),
@@ -57,7 +57,8 @@ class AlexNet(nn.Module):
             nn.ReLU(inplace=True),
             nn.Linear(4096, 2),
         )
-        self.domain_classifier.load_state_dict(state_dict)
+        self.domain_classifier.weight.data() = self.class_classifier.weight.data()
+        self.domain_classifier.bias.data() = self.class_classifier.bias.data()
 
 
     def forward(self, input_data, alpha):
