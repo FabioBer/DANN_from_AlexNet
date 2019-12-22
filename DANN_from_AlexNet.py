@@ -51,8 +51,13 @@ class AlexNet(nn.Module):
         )
         
         
-        nn.init.normal(self.class_classifier[1].weight)
-        nn.init.normal(self.class_classifier[1].bias)
+        def init_weights(m):
+            if type(m) == nn.Linear:
+                m.weight.data.fill_(self.class_classifier[1].weight)
+                m.bias.data.fill_(self.class_classifier[1].bias)
+
+        #nn.init.normal(self.class_classifier[1].weight)
+        #nn.init.normal(self.class_classifier[1].bias)
         
         self.domain_classifier = nn.Sequential(
             nn.Dropout(),
@@ -62,7 +67,9 @@ class AlexNet(nn.Module):
             nn.Linear(4096, 2)
             #nn.LogSoftmax(dim=1)
         )
-            
+        
+        self.domain_classifier.apply(init_weights)
+        
     def forward(self, input_data, alpha):
         feature = self.feature(input_data)
         feature = feature.view(-1, 256 * 6 * 6)
