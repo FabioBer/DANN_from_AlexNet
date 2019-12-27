@@ -13,7 +13,7 @@ model_urls = {
 
 class AlexNet(nn.Module):
 
-    def __init__(self, num_classes=7, num_domain=2):
+    def __init__(self, num_classes=7, num_domains=2):
         super(AlexNet, self).__init__()
         
         state_dict = load_state_dict_from_url(model_urls['alexnet'],
