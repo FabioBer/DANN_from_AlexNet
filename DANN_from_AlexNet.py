@@ -13,7 +13,7 @@ model_urls = {
 
 class AlexNet(nn.Module):
 
-    def __init__(self, num_classes=7):
+    def __init__(self, num_classes=7, num_domain=2):
         super(AlexNet, self).__init__()
         
         state_dict = load_state_dict_from_url(model_urls['alexnet'],
@@ -62,7 +62,9 @@ class AlexNet(nn.Module):
             nn.Linear(256 * 6 * 6, 4096),
             nn.ReLU(inplace=True),
             nn.Dropout(),
-            nn.Linear(4096, 2)
+            nn.Linear(4096, 4096),
+            nn.ReLU(inplace=True),
+            nn.Linear(4096, num_domains)
         )
         
         self.domain_classifier.apply(init_weights)
