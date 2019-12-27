@@ -84,6 +84,9 @@ def DANN_from_AlexNet(pretrained=False, progress=True, **kwargs):
         state_dict = load_state_dict_from_url(model_urls['alexnet'],
                                               progress=progress)
          
+        # unused parameters removal
+        state_dict.popitem("classifier.6.bias")
+        state_dict.popitem("classifier.6.weight")
         model.load_state_dict(state_dict,strict=False)
         model.init_weight()
 
