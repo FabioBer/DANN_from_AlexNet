@@ -70,8 +70,6 @@ class AlexNet(nn.Module):
         else:
             reverse_feature = ReverseLayerF.apply(feature, alpha)
             return self.domain_classifier(reverse_feature)
-
-        return class_output, domain_output
     
     
 def DANN_from_AlexNet(pretrained=False, progress=True, **kwargs):
