@@ -17,12 +17,6 @@ class AlexNet(nn.Module):
     def __init__(self, num_classes=7, num_domains=2):
         super(AlexNet, self).__init__()
         
-        state_dict = load_state_dict_from_url(model_urls['alexnet'],
-                                              progress = True)
-        
-        self.load_state_dict(state_dict = state_dict,
-                              strict = False)
-        
         self.features = nn.Sequential(
             nn.Conv2d(3, 64, kernel_size=11, stride=4, padding=2),
             nn.ReLU(inplace=True),
@@ -50,15 +44,7 @@ class AlexNet(nn.Module):
             nn.ReLU(inplace=True),
             nn.Linear(4096, num_classes)
         )
-        
-        
-        def init_weight(self):
-            self.domain_classifier[1].weight.data = self.class_classifier[1].weight.data
-            self.domain_classifier[1].bias.data = self.class_classifier[1].bias.data
-            self.domain_classifier[4].weight.data = self.class_classifier[4].weight.data
-            self.domain_classifier[4].bias.data = self.class_classifier[4].bias.data
-                
-        
+                 
         self.domain_classifier = nn.Sequential(
             nn.Dropout(),
             nn.Linear(256 * 6 * 6, 4096),
@@ -69,7 +55,11 @@ class AlexNet(nn.Module):
             nn.Linear(4096, num_domains)
         )
         
-        self.domain_classifier.apply(init_weights)
+    def init_weight(self):
+        self.domain_classifier[1].weight.data = self.class_classifier[1].weight.data
+        self.domain_classifier[1].bias.data = self.class_classifier[1].bias.data
+        self.domain_classifier[4].weight.data = self.class_classifier[4].weight.data
+        self.domain_classifier[4].bias.data = self.class_classifier[4].bias.data
         
     def forward(self, input_data, alpha):
         feature = self.features(input_data)
