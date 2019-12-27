@@ -61,13 +61,15 @@ class AlexNet(nn.Module):
         self.domain_classifier[4].weight.data = self.class_classifier[4].weight.data
         self.domain_classifier[4].bias.data = self.class_classifier[4].bias.data
         
-    def forward(self, input_data, alpha):
+    def forward(self, input_data, alpha=None):
         feature = self.features(input_data)
         feature = self.avgpool(feature)
         feature = torch.flatten(feature, 1)
-        reverse_feature = ReverseLayerF.apply(feature, alpha)
-        class_output = self.class_classifier(feature)
-        domain_output = self.domain_classifier(reverse_feature)
+        if alpha is None:
+            return self.class_classifier(feature)
+        else:
+            reverse_feature = ReverseLayerF.apply(feature, alpha)
+            return self.domain_classifier(reverse_feature)
 
         return class_output, domain_output
     
