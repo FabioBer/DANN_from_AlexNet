@@ -55,9 +55,7 @@ class AlexNet(nn.Module):
             if type(m) == nn.Linear:
                 m.weight.data = self.class_classifier[1].weight.data
                 m.bias.data = self.class_classifier[1].bias.data
-
-        #nn.init.normal(self.class_classifier[1].weight)
-        #nn.init.normal(self.class_classifier[1].bias)
+                
         
         self.domain_classifier = nn.Sequential(
             nn.Dropout(),
@@ -65,15 +63,14 @@ class AlexNet(nn.Module):
             nn.ReLU(inplace=True),
             nn.Dropout(),
             nn.Linear(4096, 2)
-            #nn.LogSoftmax(dim=1)
         )
         
         self.domain_classifier.apply(init_weights)
         
     def forward(self, input_data, alpha):
-        input_data = input_data.expand(input_data.data.shape[0], 3, 224, 224)
         feature = self.features(input_data)
-        feature = feature.view(-1, 9216)
+        feature = self.avgpool(feature)
+        feature = torch.flatten(feature, 1)
         reverse_feature = ReverseLayerF.apply(feature, alpha)
         class_output = self.class_classifier(feature)
         domain_output = self.domain_classifier(reverse_feature)
