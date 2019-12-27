@@ -52,10 +52,11 @@ class AlexNet(nn.Module):
         )
         
         
-        def init_weights(m):
-            if type(m) == nn.Linear:
-                m.weight.data = self.class_classifier[1].weight.data
-                m.bias.data = self.class_classifier[1].bias.data
+        def init_weight(self):
+            self.domain_classifier[1].weight.data = self.class_classifier[1].weight.data
+            self.domain_classifier[1].bias.data = self.class_classifier[1].bias.data
+            self.domain_classifier[4].weight.data = self.class_classifier[4].weight.data
+            self.domain_classifier[4].bias.data = self.class_classifier[4].bias.data
                 
         
         self.domain_classifier = nn.Sequential(
@@ -79,3 +80,21 @@ class AlexNet(nn.Module):
         domain_output = self.domain_classifier(reverse_feature)
 
         return class_output, domain_output
+    
+    
+def DANN_from_AlexNet(pretrained=False, progress=True, **kwargs):
+    r"""AlexNet model architecture from the
+    `"One weird trick..." <https://arxiv.org/abs/1404.5997>`_ paper.
+    Args:
+        pretrained (bool): If True, returns a model pre-trained on ImageNet
+        progress (bool): If True, displays a progress bar of the download to stderr
+    """
+    model = AlexNet(**kwargs)
+    if pretrained:
+        state_dict = load_state_dict_from_url(model_urls['alexnet'],
+                                              progress=progress)
+         
+        model.load_state_dict(state_dict,strict=False)
+        model.init_weight()
+
+    return model
