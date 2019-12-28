@@ -69,7 +69,7 @@ class AlexNet(nn.Module):
             return self.class_classifier(feature)
         else:
             reverse_feature = ReverseLayerF.apply(feature, alpha)
-            return self.domain_classifier(input_data)
+            return self.domain_classifier(feature)
     
     
 def DANN_from_AlexNet(pretrained=False, progress=True, **kwargs):
@@ -87,6 +87,7 @@ def DANN_from_AlexNet(pretrained=False, progress=True, **kwargs):
         # unused parameters removal
         state_dict.popitem("classifier.6.bias")
         state_dict.popitem("classifier.6.weight")
+        
         model.load_state_dict(state_dict,strict=False)
         model.init_weight()
 
