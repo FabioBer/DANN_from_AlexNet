@@ -55,7 +55,7 @@ class AlexNet(nn.Module):
             nn.Linear(4096, num_domains)
         )
         
-    def init_weight(self):
+    def update_weights(self):
         self.domain_classifier[1].weight.data = self.class_classifier[1].weight.data
         self.domain_classifier[1].bias.data = self.class_classifier[1].bias.data
         self.domain_classifier[4].weight.data = self.class_classifier[4].weight.data
@@ -89,6 +89,6 @@ def DANN_from_AlexNet(pretrained=False, progress=True, **kwargs):
         state_dict.popitem("classifier.6.weight")
         
         model.load_state_dict(state_dict,strict=False)
-        model.init_weight()
+        model.update_weights()
 
     return model
