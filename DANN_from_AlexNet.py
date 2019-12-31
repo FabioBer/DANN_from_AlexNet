@@ -50,16 +50,16 @@ class AlexNet(nn.Module):
             nn.Linear(256 * 6 * 6, 4096),
             nn.ReLU(inplace=True),
             nn.Dropout(),
-            nn.Linear(4096, 4096),
-            nn.ReLU(inplace=True),
+            #nn.Linear(4096, 4096),
+            #nn.ReLU(inplace=True),
             nn.Linear(4096, num_domains)
         )
         
     def update_weights(self):
         self.domain_classifier[1].weight.data = self.class_classifier[1].weight.data
         self.domain_classifier[1].bias.data = self.class_classifier[1].bias.data
-        self.domain_classifier[4].weight.data = self.class_classifier[4].weight.data
-        self.domain_classifier[4].bias.data = self.class_classifier[4].bias.data
+        #self.domain_classifier[4].weight.data = self.class_classifier[4].weight.data
+        #self.domain_classifier[4].bias.data = self.class_classifier[4].bias.data
         
     def forward(self, input_data, alpha=None):
         feature = self.features(input_data)
