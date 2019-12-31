@@ -58,8 +58,8 @@ class AlexNet(nn.Module):
     def update_weights(self):
         self.domain_classifier[1].weight.data = self.class_classifier[1].weight.data
         self.domain_classifier[1].bias.data = self.class_classifier[1].bias.data
-        #self.domain_classifier[4].weight.data = self.class_classifier[4].weight.data
-        #self.domain_classifier[4].bias.data = self.class_classifier[4].bias.data
+        self.domain_classifier[4].weight.data = self.class_classifier[4].weight.data
+        self.domain_classifier[4].bias.data = self.class_classifier[4].bias.data
         
     def forward(self, input_data, alpha=None):
         feature = self.features(input_data)
